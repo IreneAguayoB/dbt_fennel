@@ -15,12 +15,15 @@ WITH one_year_clima_info AS(
            TO_TIMESTAMP(sunrise, 'HH12:MI AM'):: time as sunrise,
            TO_TIMESTAMP(sunset, 'HH12:MI AM'):: time as sunset
     FROM {{ref("staging_forecast_day")}}
+    -- removing null values
+    WHERE date IS NOT null
 ),
 add_features AS(
     SELECT * 
     -- date info
     ,DATE_PART('day', date):: INT AS day_of_month 
     ,TO_CHAR(date, 'month') AS month_of_year
+    ,DATE_PART('month', date):: INT AS number_of_month
     ,DATE_PART('year', date):: INT as year
     ,TO_CHAR(date, 'day') as day_of_week
     ,DATE_PART('week', date):: INT as week_of_year
