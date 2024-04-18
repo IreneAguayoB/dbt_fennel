@@ -27,8 +27,12 @@ add_features AS(
     ,DATE_PART('year', date):: INT as year
     ,TO_CHAR(date, 'day') as day_of_week
     ,DATE_PART('week', date):: INT as week_of_year
+
     -- sun hours
-    ,sunset - sunrise as sun_hours
+    --,sunset - sunrise as sun_hours
+
+    -- sun_time
+    ,round(EXTRACT(EPOCH FROM (sunset - sunrise))/3600, 2) as sun_hours
     
     FROM one_year_clima_info
 
